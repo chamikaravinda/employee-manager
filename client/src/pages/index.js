@@ -1,12 +1,11 @@
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
+import Head from 'next/head';
+import styles from '@/styles/Index.module.css'
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import AppsIcon from '@mui/icons-material/Apps';
-import { Grid } from '@mui/material'
-
-
+import { Link } from '@mui/material';
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -16,16 +15,25 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="main">
-        <Grid container spacing={2}>
-          <Grid lg={10}>
-          </Grid>
-          <Grid lg={2}>
-          <Button variant="contained" className={styles.btnAddEmployee}>Add Employee</Button>
-          <Button variant="contained" className={styles.btnViewType}>
-            <AppsIcon/>
-          </Button>
-          </Grid>
-        </Grid>
+        <div className={styles.banner}>
+          <Typography variant="h2" className={styles.bannerHeading}>Welcom to Employee Manager</Typography>
+          <Typography variant="h5">
+            An employee manager is responsible for leading a team 
+            to success. They provide support, guidance, and oversee
+            performance to ensure a positive work environment and
+            successful outcomes.
+          </Typography>
+          <Link href='employee/list'>
+            <Button variant="contained" className={styles.btn}>
+              Employees
+            </Button>
+          </Link>
+          <Link href='employee/add'>
+            <Button variant="outlined" className={styles.btn}>
+              Add New
+            </Button>
+          </Link>
+        </div>
       </main>
     </>
   )

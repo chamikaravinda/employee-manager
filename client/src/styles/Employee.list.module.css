@@ -1,0 +1,17 @@
+.btnAddEmployee {
+  margin: 10px 4px 0px;
+  border-radius: 20px;
+}
+
+.btnViewType {
+  background-color: #1976d2;
+  color: white;
+  margin: 10px 4px 0px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnViewType:hover {
+  background-color:#0f64b9;
+  transition: 0.7s;
+}

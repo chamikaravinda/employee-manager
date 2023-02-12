@@ -1,0 +1,32 @@
+{ 
+    "table_columes" : [
+        {
+            "Lable": "Image",
+            "key":"photo"
+        },
+        {
+            "Lable": "First Name",
+            "key":"first_name"
+        },
+        {
+            "Lable": "Last Name",
+            "key":"last_name"
+        },        
+        {
+            "Lable": "Email",
+            "key":"email"
+        },
+        {
+            "Lable": "Phone",
+            "key":"number"
+        },        
+        {
+            "Lable": "Gender",
+            "key":"gender"
+        },        
+        {
+            "Lable": "Action",
+            "key":"action"
+        } 
+    ]
+}

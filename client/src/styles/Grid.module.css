@@ -1,0 +1,34 @@
+.btnEditType {
+  background-color: #d87b11;
+  color: white;
+  margin: 10px 4px 0px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnEditType:hover {
+  background-color:#bb7e0c;
+  transition: 0.7s;
+}
+
+.btnDeleteType {
+  background-color: #f80606;
+  color: white;
+  margin: 10px 4px 0px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnDeleteType:hover {
+  background-color:#a70c0c;
+  transition: 0.7s;
+}
+
+.imageCard {
+  text-align: center;
+  font-weight: 500}
+
+.imageCardEmpData {
+  text-align: center;
+  margin: -8px 0px 1px;
+}

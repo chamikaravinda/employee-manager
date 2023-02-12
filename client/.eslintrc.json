@@ -1,3 +1,30 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+      "browser": true,
+      "node": true
+  },
+  "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:next/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
+  "rules": {
+      "semi": ["error", "always"],
+      "quotes": ["error", "double"],
+      "react/prop-types": 0
+  },
+  "overrides": [
+      {
+          "files": ["pages/**/*.js"],
+          "rules": {
+              "import/no-unresolved": [2, { "ignore": ["^@/"] }]
+          }
+      }
+  ]
 }
