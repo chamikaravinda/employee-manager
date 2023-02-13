@@ -14,13 +14,13 @@ RUN npm ci
 COPY . .
 
 # # Build the Next.js application
-# RUN npm run build
+RUN npm run build
 
 # Set the environment to production
-ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL=http://localhost:5000
 
 # Expose the default Next.js port
 EXPOSE $PORT
 
 # Start the Next.js application
-CMD ["npm", "dev"]
+CMD ["npm", "start"]
