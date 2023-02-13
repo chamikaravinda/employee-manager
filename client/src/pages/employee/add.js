@@ -1,14 +1,47 @@
 import Head from 'next/head';
 import styles from '@/styles/Employee.addEdit.module.css'
-import Button from '@mui/material/Button';
-import { Link, Grid } from '@mui/material';
+import { Link, Grid, Snackbar, Button, Alert } from '@mui/material';
 import EmployeeForm from '@/components/employee.form';
+import { useState } from 'react';
+import axios from 'axios';
+
 
 export default function AddEmployee() {
 
+  const [state, setState] = useState({
+    isOpenNotification: false,
+    message: "",
+    severity: "info",
+  });
+
+  const { message, severity, isOpenNotification } = state;
+
   function addEmployee(employee){
-        console.log(employee);
+    axios.post(`${process.env.NEXT_PUBLIC_API_URL}/employees`, employee)
+    .then(function (response) {
+      setState({
+        isOpenNotification: true,
+        message: "Add employee success",
+        severity: "success",
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+      setState({
+        isOpenNotification: true,
+        message: "Error in adding the employee",
+        severity: "error",
+      });
+    });
   }
+
+  const handleClose = () => {
+    setState({
+      isOpenNotification: false,
+      message: '',
+      severity: "info",
+    });  
+  };
 
   return (
     <>
@@ -36,6 +69,19 @@ export default function AddEmployee() {
           </Grid>
         </Grid>
       </main>
+      <Snackbar 
+        open={isOpenNotification} 
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        autoHideDuration={6000} 
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </>
   )
 }

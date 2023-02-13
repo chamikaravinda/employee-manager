@@ -3,14 +3,15 @@ import styles from '@/styles/Employee.addEdit.module.css'
 import Button from '@mui/material/Button';
 import { Link, Grid } from '@mui/material';
 import EmployeeForm from '@/components/employee.form';
+import axios from 'axios';
 
 export const getStaticPaths = async () => {
-  const res = await fetch(process.env.api_url+"/users");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees`);
   const data = await res.json();
 
-  const paths = data.map( user => {
+  const paths = data.map( employee => {
       return {
-          params: {id: user.id.toString()}
+          params: {id: employee.id.toString()}
       }
   })
 
@@ -22,19 +23,50 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const id = context.params.id;
-  const res = await fetch(process.env.api_ur+"/users/"+id);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees/`+id);
   const data = await res.json();
   return {
-      props: {user: data}
+      props: {employee: data}
   }
 }
 
-export default function EditEmployee({user}) {
+export default function EditEmployee({employee}) {
+
+  const [state, setState] = useState({
+    isOpenNotification: false,
+    message: "",
+    severity: "info",
+  });
+
+  const { message, severity, isOpenNotification } = state;
 
   
   function editEmployee(employee){
-        console.log(employee);
+    axios.put(`${process.env.NEXT_PUBLIC_API_URL}/employees/${employee.id}`, employee)
+    .then(function (response) {
+      setState({
+        isOpenNotification: true,
+        message: "Update employee success",
+        severity: "success",
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+      setState({
+        isOpenNotification: true,
+        message: "Error in updating the employee",
+        severity: "error",
+      });
+    });
   }
+
+  const handleClose = () => {
+    setState({
+      isOpenNotification: false,
+      message: "",
+      severity: "info",
+    });  
+  };
 
   return (
     <>
@@ -58,9 +90,22 @@ export default function EditEmployee({user}) {
           <Grid lg={4} md={3}>
           </Grid>
           <Grid lg={4} md={6} className={styles.form}>
-            <EmployeeForm action={"Save"} actionFunction={editEmployee} data={user}/>
+            <EmployeeForm action={"Save"} actionFunction={editEmployee} data={employee}/>
           </Grid>
         </Grid>
+        <Snackbar 
+          open={isOpenNotification} 
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          autoHideDuration={6000} 
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </main>
     </>
   )

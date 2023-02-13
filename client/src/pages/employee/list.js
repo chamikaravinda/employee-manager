@@ -1,27 +1,66 @@
 import Head from 'next/head'
 import styles from '@/styles/Employee.List.module.css'
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import {Button,IconButton, Grid, Snackbar, Alert, Link} from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AppsIcon from '@mui/icons-material/Apps';
-import { Grid } from '@mui/material'
 import { useSelector } from "react-redux";
 import React, { useState } from 'react';
 import CommonTable from './../../components/table';
 import ImageGrid from './../../components/grid';
 import config from './../../config/index.config.json';
-import { Link } from '@mui/material';
 import { useRouter } from "next/router";
+import { wrapper } from "../../store/store";
+import { getEmployees } from '../../store/employeeSlice';
+import axios from 'axios';
 
-export default function EmployeeList() {
+
+// export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {  
+//   axios.get(`${process.env.NEXT_PUBLIC_API_URL}/employees`)
+//   .then(function (response) {
+//     store.dispatch(getEmployees(response.data))
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+// });
+
+export const getStaticProps = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees`);
+  const data = await res.json();
+
+  return {
+      props : { employees: data }
+  }
+}
+
+export default function EmployeeList({employees}) {
   
   const router = useRouter()
-  
-  const [isGrid, setIsGrid] = useState(false);
-  const { users } = useSelector((state) => state.users);
+  // const { employees } = useSelector((state) => state.employees);
+
+  const [state, setState] = useState({
+    isOpenNotification: false,
+    message: '',
+    severity: 'info',
+    isGrid: false,
+  });
+
+  const { message, severity, isOpenNotification, isGrid } = state;
+
+  const handleClose = () => {
+    setState({
+      ...state,
+      isOpenNotification: false,
+      message: '',
+      severity: '',
+    });  
+  };
 
   function toggleView () {
-    setIsGrid(!isGrid);
+    setState({
+      ...state,
+      isGrid: !isGrid
+    });
   }
 
   function EditEmployee(id){
@@ -29,7 +68,24 @@ export default function EmployeeList() {
   }
 
   function deleteEmployee(id){
-    console.log("deleteAction")
+    axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/employees/${id}`)
+    .then(function (response) {
+      setState({
+        ...state,
+        isOpenNotification: true,
+        message: "Delete employee success",
+        severity: "success",
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+      setState({
+        ...state,
+        isOpenNotification: true,
+        message: "Error in deleting the employee",
+        severity: "error",
+      });
+    });
   }
 
   return (
@@ -60,11 +116,11 @@ export default function EmployeeList() {
           </Grid>
           <Grid xs={12}>
             {isGrid ? <ImageGrid 
-                        data={users} 
+                        data={employees} 
                         editAction={EditEmployee} 
                         deleteAction={deleteEmployee}
                       /> : <CommonTable 
-                          data={users} 
+                          data={employees} 
                           columns = {config.table_columes}
                           editAction={EditEmployee} 
                           deleteAction={deleteEmployee} 
@@ -72,6 +128,19 @@ export default function EmployeeList() {
               }
           </Grid>
         </Grid>
+        <Snackbar 
+          open={isOpenNotification} 
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          autoHideDuration={6000} 
+          onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
       </main>
     </>
   )
