@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '@/styles/Employee.List.module.css'
+import styles from '@/styles/Employee.list.module.css'
 import {Button,IconButton, Grid, Snackbar, Alert, Link} from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AppsIcon from '@mui/icons-material/Apps';

@@ -44,6 +44,19 @@ services:
       - postgres
     depends_on:
       - postgres
+
+  employee-client:
+    image: chamikaravinda/employee-client:latest
+    container_name: employee-client
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:5000"
+    networks:
+      - employee
+    depends_on:
+      - postgres 
+      - employee-server   
 networks:
   postgres:
     driver: bridge

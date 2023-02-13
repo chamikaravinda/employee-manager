@@ -13,8 +13,8 @@ RUN npm ci
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the Next.js application
-RUN npm run build
+# # Build the Next.js application
+# RUN npm run build
 
 # Set the environment to production
 ENV NODE_ENV=production
@@ -23,4 +23,4 @@ ENV NODE_ENV=production
 EXPOSE $PORT
 
 # Start the Next.js application
-CMD ["npm", "start"]
+CMD ["npm", "dev"]
